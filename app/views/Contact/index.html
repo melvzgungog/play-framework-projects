@@ -1,0 +1,45 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+#{form @Application.searchContactByTag()}
+	#{ifErrors}
+		<p class="error">
+			Please enter a TAG_NAME to search...
+		</p>
+	#{/ifErrors}
+	<p>
+		<label for="tagName"> TAG_NAME </label>
+		<input type="text" name="tagName" id="tagName" value="${params.tagName}" />
+		<input type="submit" value="SEARCH" />
+	</p>
+#{/form}
+#{if noTagFound}
+	<h2>No contacts found with tag name ${tagName} </h2>
+#{/if}
+#{else}
+	<table border=1>
+		<tr>
+			<th style="padding:10px 10px 10px 10px;"> CONTACT NAMES </th>
+			<th style="padding:10px 10px 10px 10px;"> COMPANY IDENTIFIER </th>
+			<th style="padding:10px 10px 10px 10px;"> TAGS </th>
+		</tr>
+		#{list items:contacts, as:'contact'}
+		<tr>
+			<td style="padding:10px 10px 10px 10px;"><center>${contact.name}</center></td>
+			<td style="padding:10px 10px 10px 10px;"><center>${contact.isCompany}</center></td>
+			<td style="padding:10px 10px 10px 10px;">
+				<center>
+					#{list items:contact.tags, as:'tag'}
+							${tag.tagName},
+					#{/list}
+				</center>
+			</td>
+		</tr>
+		#{/list}
+		<tr style="padding:10px 10px 10px 10px;">
+			<td colspan=3>
+				<center><a href="@{Contact.showList()}">Go to Contacts Page</a></center>
+			</td>
+		</tr>
+	</table>
+#{/else}

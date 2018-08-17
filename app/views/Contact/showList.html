@@ -1,0 +1,43 @@
+#{extends 'main.html' /}
+#{set title:'Contacts' /}
+
+#{form @Contact.filterContactsByTag()}
+    <p>
+        <label for="tagName">Filter contacts by tag name: </label>
+        <select  name="tagName" id="tagName">
+       		<option value='-1'>Select a tag to Filter</option>
+       		#{list items:tags, as:'tag'}
+        		<option value='${tag.tagID}'>${tag.tagName}</option>
+        	#{/list}
+        </select>
+        
+        <input type="submit" value="Filter" />
+        
+    </p>
+    
+#{/form}
+
+#{if selectedTag }
+<h3>Showing all contacts for "${selectedTag.tagName}"</h3>
+#{/if}
+#{else}
+<h3>Showing all contacts</h3>
+#{/else}
+<table border=1>
+	<tr>
+		<th>Contact name</th>
+		<th>Is a Company</th>
+		<th>Tags</th>
+	</tr>
+	#{list items:contacts, as:'contact'}
+		<tr>
+			<td>${contact.name}</td>
+			<td>${contact.isCompany}</td>
+			<td>
+				#{list items:contact.tags, as:'tag'}
+					${tag.tagName},
+				#{/list}
+			</td>
+		</tr>
+	#{/list}
+</table>
